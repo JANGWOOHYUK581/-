@@ -1,0 +1,44 @@
+c 언어
+------------------------------------
+#include <stdio.h>
+
+int main()
+{
+int coin[10], n, k, cnt = 0; //cnt는 동전의 개수
+
+scanf("%d %d", &n, &k);
+for (int i = 0; i < n; i++)
+scanf("%d", &coin[i]);
+
+for (int i = n - 1; i >= 0; i--) { //큰 동전부터
+if (k >= coin[i]) { // 총액이 동전보다 클 때
+cnt += k / coin[i];
+k %= coin[i];
+}
+else if (i == 0 && k > 0) // 마지막 동전 
+cnt++;
+}
+
+printf("%d", cnt);
+}
+------------------------------------
+파이썬
+
+# 입력 받기
+# -*- coding: utf-8 -*-
+N, K = map(int, input().split())
+coins = [int(input()) for _ in range(N)]
+
+# 최소 동전 개수 구하기 
+coin_num = 0
+
+for i in range(1,N+1):
+    # 인덱스 끝부터 순회 : 마이너스 인덱스 
+    coin = coins[-i]
+    
+    if K >= coin : 
+        num = K//coin
+        K -= coin*num
+        coin_num += num
+        
+print(coin_num)
