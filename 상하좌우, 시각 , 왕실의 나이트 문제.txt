@@ -1,0 +1,100 @@
+상하좌우 -파이썬-
+
+n = int(input())
+x, y = 1, 1
+plans = input().split()
+
+dx = [0, 0, -1, 1]
+dy = [-1, 1, 0, 0]
+move_types = ['L', 'R', 'U', 'D']
+
+for plan in plans:
+    for i in range(len(move_types)):
+        if plan == move_types[i]:
+            nx = x + dx[i]
+            ny = y + dy[i]
+            break # 연산 했으면 break
+    if nx < 1 or ny < 1 or nx > n or ny > n:
+        continue
+    x, y = nx, ny
+
+print(x, y)
+
+
+시각 -java-
+
+import java.util.*;
+ 
+class Main {
+ 
+  public static void main(String[] args) {
+ 
+		Scanner scan = new Scanner(System.in);
+		int n = scan.nextInt();
+		int answer=0;
+ 
+		for(int i=0;i<=n;i++){
+        
+			for(int j=0;j<60;j++){
+            
+				for(int k=0;k<60;k++){
+					String tmpStr="";
+					tmpStr+=i;
+					tmpStr+=j;
+					tmpStr+=k;
+					if(tmpStr.contains("3")){
+						answer++;
+					}
+				}
+                
+			}
+            
+		}
+        
+		System.out.print(answer);
+		
+  }
+ 
+}
+왕실의 나이트 -java-
+
+public class Q4_Knight {
+    static int[][] move = {{-2,-1},{-2,1},{2,-1},{2,1},{-1,-2},{-1,2},{1,-2},{1,2}};
+    public static int solution(int curRow, int curCol){
+        int[][] board = new int[8][8];
+
+        int result = 0;
+        int nextRow = curRow;
+        int nextCol = curCol;
+
+        for(int i = 0 ; i<move.length ; i++){
+            nextRow = curRow + move[i][0];
+            nextCol = curCol + move[i][1];
+
+            if(nextRow < 0 || nextCol < 0 || nextRow >=8 || nextCol >= 8){
+
+            } else {
+                result ++;
+            }
+        }
+
+        return result;
+
+
+    }
+
+    public static void main (String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        String input = br.readLine();
+
+        int curRow = input.charAt(0) - '0' - 49;
+        int curCol = input.charAt(1) - '0' - 1;
+
+        System.out.println(solution(curRow, curCol));
+
+        br.close();
+        bw.close();
+    }
+}
