@@ -1,0 +1,175 @@
+BFS 파이썬
+
+from collections import deque
+
+def BFS_with_adj_list(graph, root):
+    visited = []
+    queue = deque([root])
+
+    while queue:
+        n = queue.popleft()
+        if n not in visited:
+            visited.append(n)
+            queue += graph[n] - set(visited)
+    return visited
+  
+print(BFS_with_adj_list(graph_list, root_node))
+
+
+BFS C언어
+
+void BFS(short int graph[][1001], int N, int V)
+{
+	int i, j, k;
+	int x;
+	
+	queue_push(queue, V);
+	for (k = 0; k <= N; k++) {
+		graph[k][V] = FALSE;
+	}
+
+	for (i = queue_pop(); i <= N; i++) {
+		for (j = 1; j <= N; j++) {
+			if (graph[i][j] == TRUE) {
+				queue_push(queue, j);
+				for (k = 0; k <= N; k++) {
+					graph[k][j] = FALSE;
+				}
+			}
+			if (j == N) i = queue_pop() - 1;
+		}
+		if (front == back) break;
+	}
+
+	return;
+}
+
+DFS 파이썬
+
+def DFS_with_adj_list(graph, root):
+    visited = []
+    stack = [root]
+
+    while stack:
+        n = stack.pop()
+        if n not in visited:
+            visited.append(n)
+            stack += graph[n] - set(visited)
+    return visited
+
+print(BFS_with_adj_list(graph_list, root_node))
+
+DFS C언어
+
+
+int v[MAX] = { 0 }; 
+int xy[MAX][MAX] = { 0 }; 
+void DFS(int n, int s) { v[s] = 1;
+ printf("%d 번 노드 방문\n", s); 
+for (int i = 0; i < n; i++) 
+{ if (xy[s][i] == 1 && v[i] == 0) DFS(n, i); } } 
+int main() 
+{ int n, m, start, x, y; 
+scanf("%d %d %d", &n, &m, &start); 
+for (int i = 0; i < m; i++) { 
+scanf("%d %d", &x, &y); 
+xy[x][y] = xy[y][x] = 1; }
+ DFS(n, start); 
+return 0; }
+
+얼음 얼려먹기 파이썬
+
+
+n, m = map(int, input().split())
+
+
+graph = []
+for i in range(n):
+    graph.append(list(map(int, input())))
+
+
+def dfs(x, y):
+    
+    if x <= -1 or x >= n or y <= -1 or y >= m:
+        return False
+   
+    if graph[x][y] == 0:
+     
+        graph[x][y] = 1
+       
+        dfs(x - 1, y)
+        dfs(x, y - 1)
+        dfs(x + 1, y)
+        dfs(x, y + 1)
+        return True
+    return False
+
+result = 0
+for i in range(n):
+    for j in range(m):
+        if dfs(i, j) == True:
+            result += 1
+
+print(result) 
+
+음료수 얼려 먹기 java 
+
+public class 음료수얼려먹기 {
+
+    public static int N,M;
+    public static int [][] graph = new int [1000][1000];
+
+    public static void main(String[] args){
+        Scanner scanner = new Scanner(System.in);
+
+       
+        N = scanner.nextInt();
+        M = scanner.nextInt();
+        scanner.nextLine(); 
+
+
+       
+        for(int i=0; i <N; i++){
+            String str = scanner.nextLine();
+            for(int j=0; j<M; j++){
+                graph[i][j] = str.charAt(j) - '0';
+            }
+        }
+        scanner.close();
+
+       
+        int result = 0;
+    
+        for(int i=0; i <N; i++){
+            for(int j=0; j<M; j++){
+               
+                if(dfs(i, j)){
+                    result+=1;
+                }
+            }
+        }
+
+        System.out.println(result);
+
+
+    }
+
+    
+    public static boolean dfs(int x, int y){
+     
+        if(x <= -1 || x>= N || y <= -1 || y >= M)
+            return false;
+
+       
+        if(graph[x][y] == 0){
+           
+            graph[x][y] = 1;
+            dfs(x -1, y);
+            dfs(x, y -1);
+            dfs(x + 1, y );
+            dfs(x, y + 1);
+            return true;
+        }
+        return false;
+    }
+}
