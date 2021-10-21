@@ -1,0 +1,263 @@
+BFS JAVA
+
+int Map[MAX][MAX];
+
+typedef struct Queue {
+	int x;
+	int y;
+	int s;
+} Queue;
+
+Queue Q[INFI];
+int front = -1, rear = -1;
+
+void DFS (int maxY, int maxX) {
+	// 왼, 오, 위, 아
+	int directX[] = {-1, 1, 0, 0};
+	int directY[] = {0, 0, -1, 1};
+	
+	// 시작 지점 초기화
+	rear++;
+	Q[rear].x = 0;
+	Q[rear].y = 0;
+	Q[rear].s = 1;
+	
+	// 시작 지점 방문표시
+	Map[0][0] = 0;
+	
+	// 너비 우선 탐색 시작
+	while (front < rear) {
+		front++;
+		int x = Q[front].x;
+		int y = Q[front].y;
+		int s = Q[front].s;
+		
+		// 도착 지점에 온 경우
+		if (x == maxX - 1 && y == maxY - 1) {
+			printf("%d\n", s);
+			return;
+		}
+		
+		// 4방향 체크 시작
+		for (int i = 0; i < 4; i++) {
+			// 이동 좌표 계산
+			int nextX = directX[i] + x;
+			int nextY = directY[i] + y;
+			
+			// 이동 좌표 유효성 검사
+			if (nextX < 0 || nextX >= maxX || nextY < 0 || nextY >= maxY) {
+				continue;
+			}
+			
+			// 현재 맵에서 이동 가능한지?
+			if (Map[nextY][nextX] == 1) {
+				// 큐에 추가
+				rear++;
+				Q[rear].x = nextX;
+				Q[rear].y = nextY;
+				Q[rear].s = s + 1;
+				
+				// 방문 표시
+				Map[nextY][nextX] = 0;
+			}
+		}
+	}
+}
+
+int main(void) {
+	int N = 0, M = 0;
+	
+	scanf("%d %d", &N, &M);
+	
+	for (int y = 0; y < N; y++) {
+		for (int x = 0; x < M; x++) {
+			scanf("%1d", &Map[y][x]);
+		}
+	}
+	
+	if (Map[0][0] == 1) {
+		DFS(N, M);
+	} else {
+		printf("0\n");
+	}
+	
+	return 0;
+}
+BFS 파이썬 
+
+from collections import deque
+
+n, m = map(int, input().split())
+
+graph = []
+
+for i in range(n):
+    graph.append(list(map(int, input())))
+
+# 상, 하, 좌, 우
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+# BFS 소스코드 구현
+def bfs(x, y):
+    # 큐(Queue) 구현을 위해 deque 라이브러리 사용
+    queue = deque()
+    queue.append((x,y))
+
+    # queue가 빌 때까지 반복
+    while queue:
+        x, y = queue.popleft()
+
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            # 범위 검사
+            if nx < 0 or ny < 0 or nx >= n or ny >= m:
+                continue
+            
+            # 벽 검사
+            if graph[nx][ny] == 0:
+                continue
+            
+            # 처음 방문시 최단 거리 기록
+            if graph[nx][ny] == 1:
+                graph[nx][ny] = graph[x][y] + 1
+                queue.append((nx, ny))
+                if nx == n -1 and ny == m -1:
+                    return graph[n - 1][m - 1] # 이 부분
+                
+    return graph[n - 1][m - 1]
+    
+print(bfs(0,0))
+
+
+DFS C ++
+
+int N, M; char Map[101][101]; // 맵
+ int Visit[101][101]; // 방문 표시
+ int dx[4] = { 1,0,-1,0 }; 
+int dy[4] = { 0,1,0,-1 }; 
+int Min = 10001; 
+void DFS(int x, int y, int depth) 
+{ 
+if (x < 0 || y < 0 || x >= N || y >= M) return; //맵의 범위를 벗어 날때
+ if (x == N - 1 && y == M - 1) //도착할때 
+{ 
+if (depth < Min) Min = depth; 
+return; } 
+for (int i = 0; i < 4; i++) 
+{ int Next_x = x + dx[i]; 
+int Next_y = y + dy[i]; 
+if (Visit[Next_x][Next_y] == 0 && Map[Next_x][Next_y] == '1') 
+{ 
+Visit[Next_x][Next_y] = 1; 
+DFS(Next_x, Next_y, depth + 1); 
+Visit[Next_x][Next_y] = 0; }} } 
+int main(void) { scanf("%d %d", &N, &M); //N세로 M가로 
+for (int i = 0; i < N; i++) 
+{ 
+scanf("%s", Map[i]); } 
+DFS(0, 0, 1); 
+printf("%d\n", Min); 
+}
+
+DFS JAVA
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+class Dot{ // 좌표 저장 클래스
+		int x;
+		int y;
+		
+		public Dot(int x, int y) { 
+			super();
+			this.x = x;
+			this.y = y;
+		}
+		
+		public int getX() {
+			return x;
+		}
+		public void setX(int x) {
+			this.x = x;
+		}
+		public int getY() {
+			return y;
+		}
+		public void setY(int y) {
+			this.y = y;
+		}				
+}
+
+class Main {
+  
+  	static int dx[] = {1,-1,0,0};
+    static int dy[] = {0,0,1,-1};
+    
+    // BFS 메소드
+	static void bfs(int[][] a, int[][] check, Dot d) {
+		Queue<Dot> q = new LinkedList<>(); // BFS를 위한 큐 객체
+				
+		q.offer(d); // 초기 0,0 좌표를 큐에 삽입
+		check[d.getX()][d.getY()] = 1; // 초기 출발 위치는 고정이며 1로 시작
+		
+		while(!q.isEmpty()) { // 주변에 1이 없을 때 까지 반복한다.
+			Dot d_p = q.poll();
+			int x = d_p.getX();
+			int y = d_p.getY();
+						
+			for(int i=0;i<4;i++) { // 상, 하, 좌, 우 탐색 반복문
+				int nx = x + dx[i];
+				int ny = y + dy[i];
+				
+				if(nx>=a.length || nx<0 || ny>=a[nx].length || ny < 0) continue;
+				
+				if(a[nx][ny] == 0) continue; // 0인 좌표는 무시한다.
+				
+                // 체크 배열에 초기화 된 값과 동일하면 방문하지 않았단 뜻이며, 그곳에 값이 1로 갈 수 있는 경로라면
+				if( check[nx][ny] == Integer.MAX_VALUE && a[nx][ny] == 1){					
+                	// 해당 체크 배열에 저장되어 있는 경로의 수와 현재 좌표에서 +1 했을 때의 경로의 수 중 최솟값을 저장
+					check[nx][ny] = Math.min(check[x][y]+1,check[nx][ny]);
+                    // 해당 좌표를 큐에 삽입 후 BFS 탐색 반복
+					q.offer(new Dot(nx,ny));
+				}
+			}			
+		}		
+	}
+	
+	public static void main(String[] args)  {
+		Scanner in = new Scanner(System.in);
+		
+		int n = in.nextInt(); // 행
+		int m = in.nextInt(); // 열
+		
+		int map[][] = new int[n][m]; // 데이터 저장 맵
+		int check[][] = new int [n][m]; // 방문 여부 체크 배열
+		
+		for(int i =0;i<map.length;i++) { // 데이터 입력
+			String str = in.next();
+			for(int j =0;j<map[i].length;j++) {
+				map[i][j] = str.charAt(j)-'0';
+			}
+		}
+        
+		for(int i =0;i<check.length;i++) { // int 형 체크 형 배열 초기화
+        	// 최단 경로를 찾는 것이기 때문에 비교를 위해 초기값은 MAX_VALUE를 사용했다.
+			Arrays.fill(check[i],Integer.MAX_VALUE);
+		}
+		
+		Dot d = new Dot(0,0); // 초기 출발 위치 객체 생성
+		bfs(map,check,d); // BFS 수행
+		
+		System.out.println(check[n-1][m-1]); // 마지막 도착지의 체크 배열에 저장되어 있는 최단 경로 출력
+			
+	  }
+}
+
+
+
+
