@@ -1,0 +1,79 @@
+typedef struct {
+    int vert; // 수직 좌표
+    int horiz; // 수평 좌표
+} offsets;
+offsets move[8]; // 이동 가능 방향들의 배열
+
+#define MAX_STACK_SIZE 100 // 최대 100, 0의 수가 최대 100인 경우
+typedef struct {
+    short int row;
+    short int col;
+    short int dir;
+} element;
+element stack[MAX_STACK_SIZE];
+
+
+while (stack is not empty) { /* move to position at top of stack */
+    <row, col, dir> = delete from top of stack;
+    while (there are more moves from current position) { // 이동할방향이있다면반복
+        <next_row, next_col > = coordinates of next move;
+        dir = direction of move;
+        if ( (next_row == EXIT_ROW) && (next_col == EXIT_COL) )
+        		success;
+        if ( maze[next_row][next_col] == 0 && mark[next_row][next_col] == 0 ) {
+            /* 길이 있고 방문하지 않았다면 */
+            mark[next_row][next_col] = 1; // 방문 표시
+            add <row, col, dir> to the top of the stack; // 스택에 추가
+            row = next_row;
+            col = next_col;
+            dir = north;
+        }
+    }
+}
+printf("No path found\n");
+ 
+
+void path (void){ // 경로가 있다면 패스 출력
+    int i, row, col, next_row, next_col, dir;
+    int found = FALSE; // 1이면 출구
+    element position;
+    mark[1][1] = 1; // 방문 설정(시작점)
+    top = 0; // 시작점 스택에 push
+    stack[0].row = 1;
+    stack[0].col = 1;
+    stack[0].dir = 1;
+    while ( top > -1 && !found ) { // 방문 안한 곳
+        position = delete(&top);
+        row = position.row;
+        col = position.col;
+        dir = position.dir;
+        while ( dir < 8 && !found ) {
+        	next_row = row + move[dir].vert;
+			next_col = col + move[dir].horiz;
+            if ( next_row==EXIT_ROW
+                && next_col==EXIT_COL )
+                found = TRUE; // 경로 찾음
+            else if ( !maze[next_row][next_col] && !mark[next_row][next_col] )
+                {
+                mark[next_row][next_col] = 1; // 방문표시
+                position.row = row;
+                position.col = col;
+                position.dir = ++dir;
+                add(&top, position);
+                row = next_row;
+                col = next_col;
+                dir = 0;
+                }
+			else ++dir;
+		}
+	}
+    if ( found ) {
+        printf("< Path >\n");
+        printf("row col\n");
+        for ( i = 0; i <= top; i++ )
+            printf("%2d%5d", stack[i].row, stack[i].col);
+            printf("%2d%5d\n", row, col);
+            printf("%2d%5d\n", EXIT_ROW, EXIT_COL);
+    }
+    else printf("경로 없음!!\n");
+}
