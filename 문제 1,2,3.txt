@@ -1,0 +1,70 @@
+ 짝수,홀수 판별하기 (c언어)
+<홀수>
+ include<stdio,h>
+ int main(void) {
+ int i;
+
+ for( i = oi i c= 100 i++) {
+ whi le ( i g 1 ) { tOl lql
+ pr i ntf( "d \n" , i )
+ breal;
+}
+}
+<짝수>
+ include<stdio,h>
+ int main(void) {
+ int i;
+
+ for( i = 0; i <= 100; i++) {
+ while (( i g 1 )==o) 
+ printf( "%d \n"  i );
+ break;
+ }
+}
+---------------------------
+비트 연산을 통해 문자의 대소문자 바꾸기
+<C언어>
+#include <stdio.h>
+
+int main(void) {
+
+	char s[100];
+
+	int i;
+
+	printf("문자열을 입력하시오: ");
+
+	scanf("%s", s);
+
+	for (i=0;i<strlen(s);i++) {
+
+		s[i] = s[i] ^ 0x20;
+
+	}
+
+	printf("결과 문자열: %s\n", s);
+
+	return 0;
+
+}
+
+=======================================
+가장 오른쪽 0 값의 비트를 1로 바꾼 값 찾
+<C언어>
+#include "stdio.h"
+typedef unsigned char uchar;
+int main()
+{
+   uchar ucA = 0x05, ucB, ucC;
+   ucB = ucA << 3;
+   ucC = ucA >> 1;
+   printf("ucA : 0x%x\n", ucA);
+   printf("ucB : 0x%x\n", ucB);
+   printf("ucC : 0x%x\n", ucC);
+}
+
+
+
+
+
+
