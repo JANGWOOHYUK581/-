@@ -1,0 +1,57 @@
+
+int numberCompare(const void* v1, const void* v2)
+{
+    char temp1[13] = { 0, };
+    char temp2[13] = { 0, };
+    int* number1 = (int*)v1;
+    int* number2 = (int*)v2;
+    sprintf(temp1, "%d%d", *number1, *number2);
+    sprintf(temp2, "%d%d", *number2, *number1);
+
+    if (strcmp(temp2, temp1) > 0)
+        return 1;
+    else if (strcmp(temp2, temp1) == 0)
+        return 0;
+    else
+        return -1;
+}
+char* solution(int numbers[], size_t numbers_len) {
+
+    int len = 0,temp=0;
+    char buffer[7000] = { 0, };
+  
+    for (int i = 0; i < numbers_len; i++)
+    {
+        sprintf(buffer, "%d", numbers[i]);
+        len += strlen(buffer);
+    }
+    qsort(numbers, numbers_len, sizeof(int), numberCompare);
+   
+    char* answer = (char*)malloc(len+1);
+    memset(answer, 0x00, len + 1);
+    memset(buffer, 0x00, 7000);
+    for (int i = 0; i < numbers_len; i++)
+    {
+        sprintf(buffer, "%d", numbers[i]);
+        strncat(answer, buffer,strlen(buffer));
+    }
+    bool check = false;
+    for (int i = 0; i < len; i++)
+    {
+        if (answer[i] == '0')
+        {
+            check = true;
+        }
+        else
+        {
+            check = false;
+            break;
+        }
+    }
+    if (check)
+    {
+        memset(answer, 0x00, len + 1);
+        strcpy(answer, "0");
+    }
+    return answer;
+}
